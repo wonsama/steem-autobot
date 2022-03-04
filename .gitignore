@@ -1,5 +1,5 @@
 # Logs
-logs
+
 *.log
 npm-debug.log*
 yarn-debug.log*
@@ -102,3 +102,15 @@ dist
 
 # TernJS port file
 .tern-port
+
+# wonsama added start -----
+
+# multiple
+logs/*
+impl/action*.js
+test*.js
+
+# single
+custom.config.js
+saved/block.json
+saved/votes.json

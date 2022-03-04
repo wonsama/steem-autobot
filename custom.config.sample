@@ -1,0 +1,19 @@
+module.exports = {
+  API_URL: "https://api.steemit.com",
+  VERSION: "0.0.1", // 프로그램 버전 정보
+  MAX_RETRY: 3, // HTTP 커넥션 재시도 횟수
+  RETRY_SEC: 3000, // 재시도 시간, 1000 = 1초
+  COMMUNITY_ID: "hive-137029", // 커뮤니티명
+  VOTER_ID: "", // 계정명
+  VOTER_POSTING_KEY: "", // 포스팅키
+  WHITE_LIST: [
+    "wonsama",
+  ], // WHITE LIST
+  MONITORS: [
+    // 모니터링 대상
+    {
+      impl: "sample", // impl 폴더 내 파일명, .js 제외
+      operations: ["comment"], // 모니터링 커맨드, wconst.js 참조
+    },
+  ],
+};
