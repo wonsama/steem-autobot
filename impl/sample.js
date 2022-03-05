@@ -19,8 +19,8 @@ const fs = require("fs");
 const moment = require("moment");
 const { ROOT_PATH } = require("../src/util/wconst");
 const { sleep } = require("../src/util/wetc");
-// const { getContent, vote } = require(`${ROOT_PATH}/src/monitor/wsteem`);
-const wsteem = require(`${ROOT_PATH}/src/monitor/wsteem`); // vote 라는 변수를 사용하는 관계로 prefix를 붙여 사용하는 방법을 수행
+// const { getContent, vote } = require(`${ROOT_PATH}/src/util/wsteem`);
+const wsteem = require(`${ROOT_PATH}/src/util/wsteem`); // vote 라는 변수를 사용하는 관계로 prefix를 붙여 사용하는 방법을 수행
 
 ////////////////////////////////////////////////////////////
 //

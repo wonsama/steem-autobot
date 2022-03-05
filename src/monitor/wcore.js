@@ -16,7 +16,7 @@
 // require (라이브러리 로딩)
 //
 const fs = require("fs");
-const { getBlockHeader, getBlocks, getOperations } = require("./wsteem");
+const { getBlockHeader, getBlocks, getOperations } = require("../util/wsteem");
 const { lpad } = require("../util/wstring");
 const { sleep, now } = require("../util/wetc");
 
@@ -173,14 +173,6 @@ async function _monitor(settings) {
   await sleep();
   _monitor(settings);
 }
-
-// {
-//   "utc": "2022-03-03T06:40:55.408Z",
-//   "block": 62091588,
-//   "local": "2022-03-03 15:40:55",
-//   "sec": 1646289655,
-//   "per": 200
-// }
 
 ////////////////////////////////////////////////////////////
 //

@@ -16,7 +16,7 @@
 // require (라이브러리 로딩)
 //
 const steem = require("steem");
-const { sleep, time } = require("../util/wetc");
+const { sleep, time } = require("./wetc");
 const API_URL = process.env.API_URL || "https://api.steemit.com";
 steem.api.setOptions({ url: API_URL }); // default 가 https://steemd.steemit.com 라서 반드시 재 설정 해야 됨
 
