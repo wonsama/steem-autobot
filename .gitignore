@@ -106,7 +106,7 @@ dist
 # wonsama added start -----
 
 # multiple
-logs/*
+logs/*.json
 impl/action*.js
 test*.js
 
