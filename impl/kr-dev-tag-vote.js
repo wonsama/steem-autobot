@@ -21,7 +21,7 @@
 const fs = require("fs");
 const moment = require("moment");
 const { ROOT_PATH } = require("../src/util/wconst");
-const { sleep } = require("../src/util/wetc");
+const { sleep, now } = require("../src/util/wetc");
 const { lpad } = require("../src/util/wstring");
 const wsteem = require(`${ROOT_PATH}/src/util/wsteem`); // vote 라는 변수를 사용하는 관계로 prefix를 붙여 사용하는 방법을 수행
 
@@ -215,9 +215,7 @@ async function _processVote(votes) {
     if (gap > VOTE_GAP_SEC) {
       // 컨텐츠 정보를 가져온다
       let c = await wsteem.getContent(vote.author, vote.permlink, VOTER_ID);
-      let votedPath = `${ROOT_PATH}/logs/voted-${moment().format(
-        "YYYYMMDD"
-      )}.json`;
+      let votedPath = `${ROOT_PATH}/logs/voted-${now("YYYYMMDD")}.json`;
       let voted = fs.existsSync(votedPath) ? require(votedPath) : [];
 
       // 보팅을 수행하지 않은 경우에만 동작
@@ -243,7 +241,7 @@ async function _processVote(votes) {
       removed = {
         ...removed,
         voted: c.voted,
-        works: moment().format("YYYY-MM-DD HH:mm:ss"),
+        works: now(),
       };
       fs.writeFileSync(
         `${ROOT_PATH}/saved/votes.json`,
