@@ -22,6 +22,7 @@ const moment = require("moment");
 // const (상수정의)
 //
 const RETRY_SEC = process.env.RETRY_SEC || 3 * 1000;
+const TIMEZONE_OFFSET_KR = 60 * 9; // 한국은 +9 시간대임.
 
 ////////////////////////////////////////////////////////////
 //
@@ -48,16 +49,25 @@ async function sleep(sec = RETRY_SEC) {
 }
 
 /**
- * 입력받은 시간 문자열을 한국 시간[zone=9] 형태로 변환 처리한다
- * 시간은 timezone 과 무관하게 동일함. 단 format은 상이함에 유의
- * [입력] 2022-03-03T09:40:18
- * [출력] 2022-03-03 18:40:18
- * @param {string} time_str 시간 문자열
- * @param {number} zone 가감 할 시간
+ * 입력 받은 시간 정보를(.000Z 누락 값) 포맷에 맞게 출력한다. 기본 타임존 한국
+ * 2022-03-03T09:40:18 => 2022-03-03T09:40:18.000Z
+ * @param {string} time_str 시간 문자열 ( .000Z 누락 값 )
+ * @param {number} fmt 출력 포맷
  * @returns string
  */
-function time(time_str, fmt = "YYYY-MM-DD HH:mm:ss") {
-  return moment(new Date(`${time_str}.000Z`)).format(fmt);
+function timestr(time_str, fmt = "YYYY-MM-DD HH:mm:ss") {
+  return time(new Date(`${time_str}.000Z`), fmt);
+}
+
+/**
+ * 입력 받은 시간 정보를 포맷에 맞게 출력한다. 기본 타임존 한국
+ * @param {string} date 날짜
+ * @param {number} fmt 출력 형식
+ * @param {number} offset 타임존 값
+ * @returns string
+ */
+function time(date, fmt = "YYYY-MM-DD HH:mm:ss", offset = TIMEZONE_OFFSET_KR) {
+  return moment(date).utcOffset(offset).format(fmt);
 }
 
 /**
@@ -66,7 +76,7 @@ function time(time_str, fmt = "YYYY-MM-DD HH:mm:ss") {
  * @returns string
  */
 function now(fmt = "YYYY-MM-DD HH:mm:ss") {
-  return moment(new Date()).format(fmt);
+  return moment(new Date()).utcOffset(TIMEZONE_OFFSET_KR).format(fmt);
 }
 
 ////////////////////////////////////////////////////////////
@@ -76,6 +86,7 @@ function now(fmt = "YYYY-MM-DD HH:mm:ss") {
 
 module.exports = {
   time,
+  timestr,
   sleep,
   now,
 };
