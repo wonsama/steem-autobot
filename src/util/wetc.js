@@ -49,16 +49,15 @@ async function sleep(sec = RETRY_SEC) {
 
 /**
  * 입력받은 시간 문자열을 한국 시간[zone=9] 형태로 변환 처리한다
+ * 시간은 timezone 과 무관하게 동일함. 단 format은 상이함에 유의
  * [입력] 2022-03-03T09:40:18
  * [출력] 2022-03-03 18:40:18
  * @param {string} time_str 시간 문자열
  * @param {number} zone 가감 할 시간
  * @returns string
  */
-function time(time_str, zone = 9) {
-  let d = new Date(time_str);
-  d.setHours(d.getHours() + zone);
-  return moment(new Date(d)).format("YYYY-MM-DD HH:mm:ss");
+function time(time_str, fmt = "YYYY-MM-DD HH:mm:ss") {
+  return moment(new Date(`${time_str}.000Z`)).format(fmt);
 }
 
 /**

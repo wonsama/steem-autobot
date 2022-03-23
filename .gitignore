@@ -114,4 +114,5 @@ test*.js
 custom.config.js
 saved/block.json
 saved/votes.json
+saved/ccount.json
 .DS_Store

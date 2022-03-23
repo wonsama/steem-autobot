@@ -16,4 +16,14 @@ module.exports = {
       operations: ["comment"], // 모니터링 커맨드, wconst.js 참조
     },
   ],
+  COMMUNITY_TAG: "kr-dev", // 태그
+  CURATOR_MAX_CNT: 5, // 큐레이터 수량
+  CURATOR_ID_PREFIX: "kr-dev.cu", // 큐레이터 아이디 프리픽스 cu0, cu1 ... cu4
+  CURATOR_POSTING_KEYS: [
+    "000",
+    "111",
+    "222",
+    "333",
+    "444",
+  ], // 포스팅키 목록 0 ~ 4 순차 기록
 };
