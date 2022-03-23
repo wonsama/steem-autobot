@@ -149,6 +149,68 @@ const _filter_notify = (operations) => {
 };
 
 /**
+ * 스크래핑한 글 정보를 커뮤니티에 포스팅 한다
+ * @param {Object} c Posting Content Info
+ */
+async function _writeScrapPost(c) {
+  // 원본 글의 요약 정보 포스팅
+  let cwif = CURATOR_POSTING_KEYS[ccount];
+  let cauthor = `${CURATOR_ID_PREFIX}${ccount}`;
+  await wsteem.comment(
+    cwif,
+    "",
+    COMMUNITY_ID,
+    cauthor,
+    c.permlink,
+    `[스크랩] ${c.title}`,
+    _getSmartBody(c).join("\n"),
+    c.json_metadata
+  );
+  // 큐레이터 카운트 증가
+  ccount++;
+  ccount = ccount % CURATOR_MAX_CNT;
+  fs.writeFileSync(
+    `${ROOT_PATH}/saved/ccount.json`,
+    JSON.stringify({ ccount }, null, 2)
+  );
+  console.log("_writeScrapPost", cauthor, ccount);
+  await sleep();
+}
+
+/**
+ * 광고용 글쓰기를 수행한다
+ * @param {Object} c Posting Content Info
+ */
+async function _writeAdReply(c) {
+  let cwif = CURATOR_POSTING_KEYS[ccount];
+  let cauthor = `${CURATOR_ID_PREFIX}${ccount}`;
+  let adscript = [];
+  adscript.push(
+    `[광고] [STEEM 개발자 커뮤니티에 참여](/hive-137029/@kr-dev/x3v6n) 하시면, 다양한 혜택을 받을 수 있습니다.`
+  );
+
+  await wsteem.comment(
+    cwif,
+    c.author,
+    c.permlink,
+    cauthor,
+    `adreply-${new Date().getTime()}`,
+    "",
+    adscript.join("\n"),
+    c.json_metadata
+  );
+  // 큐레이터 카운트 증가
+  ccount++;
+  ccount = ccount % CURATOR_MAX_CNT;
+  fs.writeFileSync(
+    `${ROOT_PATH}/saved/ccount.json`,
+    JSON.stringify({ ccount }, null, 2)
+  );
+  console.log("_writeAdReply", cauthor, ccount);
+  await sleep();
+}
+
+/**
  * 보팅 대상목록 메모리 적재
  * @param {Object[]} operations Operations 목록
  */
@@ -171,26 +233,15 @@ async function _writeVotes(operations) {
         url: `https://steemit.com/${c.category}/@${c.author}/${c.permlink}`,
       });
 
-      // 원본 글의 요약 정보 포스팅
-      let cwif = CURATOR_POSTING_KEYS[ccount];
-      let cauthor = `${CURATOR_ID_PREFIX}${ccount}`;
-      await wsteem.comment(
-        cwif,
-        "",
-        COMMUNITY_ID,
-        cauthor,
-        c.permlink,
-        `[스크랩] ${c.title}`,
-        _getSmartBody(c).join("\n"),
-        c.json_metadata
-      );
-      // 큐레이터 카운트 증가
-      ccount++;
-      ccount = ccount % CURATOR_MAX_CNT;
-      fs.writeFileSync(
-        `${ROOT_PATH}/saved/ccount.json`,
-        JSON.stringify({ ccount }, null, 2)
-      );
+      // 커뮤니티에 글을 작성하지 않은 경우
+      // 원본 글의 요약 정보 포스팅 수행
+      //! 별도 함수로 async 를 보낸 경우에는 반드시 내 외부에 await 을 추가하여 사용한다.
+      //! 그렇지 않음 변수 사용 시 ( duplication or not update ) 등이 발생할 수 있다.
+      if (COMMUNITY_ID != c.category) {
+        await _writeScrapPost(c);
+      }
+      // 광고용 댓글 쓰기를 수행한다
+      await _writeAdReply(c);
     }
   }
   // 보딩 대상 정보 업데이트
@@ -290,9 +341,11 @@ const notify = async (operations) => {
   votes = fs.existsSync(`${ROOT_PATH}/saved/votes.json`)
     ? require(`${ROOT_PATH}/saved/votes.json`)
     : [];
+  console.log("init votes", votes);
   ccount = fs.existsSync(`${ROOT_PATH}/saved/ccount.json`)
     ? require(`${ROOT_PATH}/saved/ccount.json`).ccount
     : 0;
+  console.log("init ccount", ccount);
 })();
 
 module.exports = {
