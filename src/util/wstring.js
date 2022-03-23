@@ -44,7 +44,7 @@
  * @returns string
  */
 function rpad(source, len, char = " ") {
-  return source.padEnd(len, char);
+  return source.toString().padEnd(len, char);
 }
 
 /**
@@ -55,7 +55,7 @@ function rpad(source, len, char = " ") {
  * @returns string
  */
 function lpad(source, len, char = " ") {
-  return source.padStart(len, char);
+  return source.toString().padStart(len, char);
 }
 
 ////////////////////////////////////////////////////////////

@@ -128,8 +128,8 @@ function getOperations(blocks) {
  */
 async function vote(wif, voter, author, permlink, weight = 1e4) {
   return await _recall(
-    steem.broadcast.vote,
-    "voteAsync",
+    steem.broadcast.voteAsync,
+    "vote",
     0,
     wif,
     voter,
@@ -168,7 +168,7 @@ async function getContent(author, permlink, voter = "-1") {
  * @returns number
  */
 async function getBlockHeader(is_head = true) {
-  let res = await getDynamicGlobalPropertiesAsync();
+  let res = await getDynamicGlobalProperties();
   return is_head ? res.head_block_number : res.last_irreversible_block_num;
 }
 
@@ -176,10 +176,10 @@ async function getBlockHeader(is_head = true) {
  * 전역 설정 정보를 가져온다
  * @returns Promise
  */
-async function getDynamicGlobalPropertiesAsync() {
+async function getDynamicGlobalProperties() {
   return await _recall(
     steem.api.getDynamicGlobalPropertiesAsync,
-    "getDynamicGlobalPropertiesAsync"
+    "getDynamicGlobalProperties"
   );
 }
 
@@ -210,6 +210,40 @@ async function getBlocks(start_block, end_block) {
   return Promise.all(blocks);
 }
 
+/**
+ * 보팅을 수행한다
+ * @param {string} wif 보팅 계정 포스팅키
+ * @param {string} voter 보팅 계정명
+ * @param {string} author 보팅 할 글의 author
+ * @param {string} permlink 보팅 할 글의 permlink
+ * @param {number} weight 보팅 weight, 10000(1e4) 이 100%임
+ * @returns Promise
+ */
+async function comment(
+  wif,
+  parentAuthor,
+  parentPermlink,
+  author,
+  permlink,
+  title,
+  body,
+  jsonMetadata
+) {
+  return await _recall(
+    steem.broadcast.commentAsync,
+    "comment",
+    0,
+    wif,
+    parentAuthor,
+    parentPermlink,
+    author,
+    permlink,
+    title,
+    body,
+    jsonMetadata
+  );
+}
+
 ////////////////////////////////////////////////////////////
 //
 // exports (외부 노출 함수 지정)
@@ -217,10 +251,11 @@ async function getBlocks(start_block, end_block) {
 
 module.exports = {
   getBlockHeader,
-  getDynamicGlobalPropertiesAsync,
+  getDynamicGlobalProperties,
   getBlock,
   getBlocks,
   getOperations,
   getContent,
   vote,
+  comment,
 };

@@ -63,3 +63,13 @@ ecosystem.config.js 파일은 `process.env.xxx` 등과 같이, 소스 내 환경
 * [steem-js](https://github.com/steemit/steem-js/tree/master/doc)
 * [pm2-doc-single-page](https://pm2.keymetrics.io/docs/usage/pm2-doc-single-page/)
 * [application-declaration](https://pm2.keymetrics.io/docs/usage/application-declaration/)
+
+## HISTORY
+
+22.03.23
+
+> `#kr-dev` 태그 기반 글 복제 및 보팅 기능 추가
+
+22.03.03
+
+> 최초 작성
