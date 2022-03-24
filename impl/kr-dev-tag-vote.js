@@ -164,7 +164,7 @@ async function _writeScrapPost(c) {
     COMMUNITY_ID,
     cauthor,
     c.permlink,
-    `[스크랩] ${c.title}`,
+    `[by @${c.author}] ${c.title}`,
     _getSmartBody(c).join("\n"),
     c.json_metadata
   );
