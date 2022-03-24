@@ -70,7 +70,9 @@ function _getSmartBody(c, line = 5) {
     `#### 원본 글 보러가기 : [${c.title}](/${c.category}/@${c.author}/${c.permlink})`
   );
   header.push("");
-  header.push("<sub>미리보기 (5 line)</sub>");
+  header.push(`<sub>작성자 : @${c.author} 미리보기 (5 sentences)</sub>`);
+  header.push("");
+  header.push("---");
   header.push("");
   let body = sp.reduce((prev, curr) => {
     if (count < line) {
@@ -86,7 +88,7 @@ function _getSmartBody(c, line = 5) {
   tail.push("---");
   tail.push("");
   tail.push(
-    `원본 글 내용은 [${c.title}](/${c.category}/@${c.author}/${c.permlink}) 에서 확인 하실 수 있습니다.`
+    `[더 보기](/${c.category}/@${c.author}/${c.permlink}) 에서 확인 하실 수 있습니다.`
   );
   tail.push("");
   tail.push("---");
@@ -228,7 +230,7 @@ async function _writeVotes(operations) {
       buffer.push({
         author: c.author,
         permlink: c.permlink,
-        title: c.title,
+        title: `[@${c.author}] ${c.title}`,
         created: c.created,
         url: `https://steemit.com/${c.category}/@${c.author}/${c.permlink}`,
       });
