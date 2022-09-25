@@ -139,7 +139,13 @@ const _filter_notify = (operations) => {
 
   // json_metadata 내 특정 값 점검
   operations = operations.filter((x) => {
-    let metadata = JSON.parse(x.operation_data.json_metadata);
+    let metadata;
+    try {
+      metadata = JSON.parse(x.operation_data.json_metadata);
+    } catch (err) {
+      return false;
+    }
+
     if (metadata.tags.includes(COMMUNITY_TAG)) {
       // COMMUNITY_TAG : kr-dev 를 포함한 경우
       return true;
