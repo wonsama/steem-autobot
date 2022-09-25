@@ -166,6 +166,9 @@ async function _writeScrapPost(c) {
   // 원본 글의 요약 정보 포스팅
   let cwif = CURATOR_POSTING_KEYS[ccount];
   let cauthor = `${CURATOR_ID_PREFIX}${ccount}`;
+
+  // comment is recalled : 1 RPCError: Assert Exception:permlink.size()
+  console.log(cauthor, c.permlink);
   await wsteem.comment(
     cwif,
     "",
