@@ -241,7 +241,7 @@ async function _writeVotes(operations) {
       VOTER_ID
     );
     // 수정글이 아니며, 보팅을 수행하지 않은 경우에만 동작
-    if (!c.changed && !c.voted) {
+    if (!c.changed && !c.voted && c.permlink) {
       buffer.push({
         author: c.author,
         permlink: c.permlink,
