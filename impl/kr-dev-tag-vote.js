@@ -168,7 +168,11 @@ async function _writeScrapPost(c) {
   let cauthor = `${CURATOR_ID_PREFIX}${ccount}`;
 
   // comment is recalled : 1 RPCError: Assert Exception:permlink.size()
-  console.log(cauthor, c.permlink);
+
+  if (!c.permlink) {
+    console.log("empty", cauthor, c.title);
+    return;
+  }
   await wsteem.comment(
     cwif,
     "",
