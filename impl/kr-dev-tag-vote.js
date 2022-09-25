@@ -255,6 +255,12 @@ async function _writeVotes(operations) {
       //! 별도 함수로 async 를 보낸 경우에는 반드시 내 외부에 await 을 추가하여 사용한다.
       //! 그렇지 않음 변수 사용 시 ( duplication or not update ) 등이 발생할 수 있다.
       if (COMMUNITY_ID != c.category) {
+        console.log(
+          c.author,
+          c.permlink,
+          c.title,
+          `https://steemit.com/${c.category}/@${c.author}/${c.permlink}`
+        );
         await _writeScrapPost(c);
       }
       // 광고용 댓글 쓰기를 수행한다
